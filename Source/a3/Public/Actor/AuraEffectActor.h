@@ -84,4 +84,8 @@ protected:
 
 	//将游戏效果句柄映射到能力系统组件
 	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandles;
+
+	//角色等级
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Effects")
+	float ActorLevel = 1.f;
 };

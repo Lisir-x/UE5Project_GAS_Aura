@@ -36,7 +36,7 @@ void AAuraEffectActor::ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGam
 	EffectContextHandle.AddSourceObject(this);
 	//创建游戏效果规格句柄(要应用的游戏效果类,效果等级,上下文句柄)
 	const FGameplayEffectSpecHandle EffectSpecHandle =
-		TargetASC->MakeOutgoingSpec(GameplayEffectClass, 1.f, EffectContextHandle);
+		TargetASC->MakeOutgoingSpec(GameplayEffectClass, ActorLevel, EffectContextHandle);
 	//创建活动游戏效果句柄并将创建的效果规格应用到自身的ASC上
 	const FActiveGameplayEffectHandle ActiveEffectHandle =
 		TargetASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
