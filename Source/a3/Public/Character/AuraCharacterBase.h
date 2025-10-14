@@ -37,4 +37,7 @@ protected:
 	//属性集组件
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
+
+	//初始化角色信息
+	virtual void InitAbilityActorInfo();
 };

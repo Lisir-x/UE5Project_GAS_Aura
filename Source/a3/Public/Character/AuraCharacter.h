@@ -21,5 +21,5 @@ public:
 
 private:
 	//初始化角色信息
-	void InitAbilityActorInfo();
+	virtual void InitAbilityActorInfo() override;
 };

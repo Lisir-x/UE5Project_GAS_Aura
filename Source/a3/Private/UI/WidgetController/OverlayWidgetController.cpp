@@ -3,12 +3,13 @@
 
 #include "UI/WidgetController/OverlayWidgetController.h"
 
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 
 //广播初始值
 void UOverlayWidgetController::BroadcastInitialValues()
 {
-	//创建由 AttributeSet 转换的 AuraAttributeSet
+	//创建由AttributeSet转换的AuraAttributeSet
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
 
 	//广播当前生命值和最大生命值
@@ -22,44 +23,57 @@ void UOverlayWidgetController::BroadcastInitialValues()
 //绑定回调到依赖项
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-	//创建由 AttributeSet 转换的 AuraAttributeSet
+	//创建由AttributeSet转换的AuraAttributeSet
 	const UAuraAttributeSet* AuraAttributeSet = CastChecked<UAuraAttributeSet>(AttributeSet);
 
-	//绑定属性回调函数
+	//绑定属性变化回调函数
 	//生命值变化
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		AuraAttributeSet->GetHealthAttribute()).AddUObject(this, &UOverlayWidgetController::HealthChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetHealthAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Data)
+		{
+			OnHealthChanged.Broadcast(Data.NewValue);
+		}
+	);
 	//最大生命值变化
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		AuraAttributeSet->GetMaxHealthAttribute()).AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetMaxHealthAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Data)
+		{
+			OnMaxHealthChanged.Broadcast(Data.NewValue);
+		}
+	);
 	//法力值变化
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		AuraAttributeSet->GetManaAttribute()).AddUObject(this, &UOverlayWidgetController::ManaChanged);
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetManaAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Data)
+		{
+			OnManaChanged.Broadcast(Data.NewValue);
+		}
+	);
 	//最大法力值变化
-	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(
-		AuraAttributeSet->GetMaxManaAttribute()).AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
-}
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAttributeSet->GetMaxManaAttribute()).AddLambda(
+		[this](const FOnAttributeChangeData& Data)
+		{
+			OnMaxManaChanged.Broadcast(Data.NewValue);
+		}
+	);
 
-//生命值回调函数
-void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Date) const
-{
-	OnHealthChanged.Broadcast(Date.NewValue);
-}
-
-//最大生命值回调函数
-void UOverlayWidgetController::MaxHealthChanged(const FOnAttributeChangeData& Date) const
-{
-	OnMaxHealthChanged.Broadcast(Date.NewValue);
-}
-
-//法力值回调函数
-void UOverlayWidgetController::ManaChanged(const FOnAttributeChangeData& Date) const
-{
-	OnManaChanged.Broadcast(Date.NewValue);
-}
-
-//最大法力值回调函数
-void UOverlayWidgetController::MaxManaChanged(const FOnAttributeChangeData& Date) const
-{
-	OnMaxManaChanged.Broadcast(Date.NewValue);
+	//绑定效果资产标签委托
+	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
+		[this](const FGameplayTagContainer& AssetTags)
+		{
+			//遍历所有标签
+			for (const FGameplayTag& Tag : AssetTags)
+			{
+				//创建一个名为"Message"的标签
+				FGameplayTag MessageTag = FGameplayTag::RequestGameplayTag(FName("Message"));	/*注：此处写死了父标签*/
+				//检查Tag是否是"Message"子标签
+				if (Tag.MatchesTag(MessageTag))
+				{
+					//从MessageWidgetDataTable根据Tag获取对应的UI控件行
+					const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+					//广播该行的数据
+					MessageWidgetRow.Broadcast(*Row);
+				}
+			}
+		}	
+	);
 }

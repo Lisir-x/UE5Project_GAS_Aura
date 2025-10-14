@@ -26,4 +26,7 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+
+	//初始化角色信息
+	virtual void InitAbilityActorInfo() override;
 };

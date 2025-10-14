@@ -4,6 +4,7 @@
 #include "Character/AuraCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
@@ -46,17 +47,19 @@ void AAuraCharacter::InitAbilityActorInfo()
 	check(AuraPlayerState);	//检查初始化
 	//获取能力系统组件并初始化角色信息
 	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
+	//转为UAuraAbilitySystemComponent并调用AbilityActorInfoSet函数
+	Cast<UAuraAbilitySystemComponent>(AuraPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	//设置能力系统组件和属性集组件
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
 
-	//尝试将当前控制器转换为 AAuraPlayerController
+	//尝试将当前控制器转换为AAuraPlayerController
 	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
 	{
-		//尝试将从 AAuraPlayerController 获取的 HUD 转换为 AAuraHUD
+		//尝试将从AAuraPlayerController获取的HUD转换为AAuraHUD
 		if (AAuraHUD* AuraHUD = Cast<AAuraHUD>(AuraPlayerController->GetHUD()))
 		{
-			//调用 InitOverlay 方法初始化覆层
+			//调用InitOverlay函数初始化覆层
 			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
