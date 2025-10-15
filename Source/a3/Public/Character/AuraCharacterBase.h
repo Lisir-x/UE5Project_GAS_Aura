@@ -7,6 +7,7 @@
 #include "GameFramework/Character.h"
 #include "AuraCharacterBase.generated.h"
 
+class UGameplayEffect;
 class UAbilitySystemComponent;
 class UAttributeSet;
 
@@ -40,4 +41,11 @@ protected:
 
 	//初始化角色信息
 	virtual void InitAbilityActorInfo();
+
+	//主属性游戏效果
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
+
+	//初始化主属性
+	void InitializePrimaryAttributes() const;
 };
