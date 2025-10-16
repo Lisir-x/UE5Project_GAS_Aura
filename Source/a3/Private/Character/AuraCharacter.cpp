@@ -39,6 +39,15 @@ void AAuraCharacter::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+int32 AAuraCharacter::GetPlayerLevel()
+{
+	//创建角色状态
+	const AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check(AuraPlayerState);	//检查初始化
+	//调用角色状态内联函数获取角色等级并返回
+	return AuraPlayerState->GetPlayerLevel();
+}
+
 //初始化角色信息
 void AAuraCharacter::InitAbilityActorInfo()
 {
@@ -63,6 +72,6 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
-	//初始化主属性
-	InitializePrimaryAttributes();
+	//初始化默认属性
+	InitializeDefaultAttributes();
 }

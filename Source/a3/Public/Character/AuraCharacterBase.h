@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
 class UGameplayEffect;
@@ -12,7 +13,7 @@ class UAbilitySystemComponent;
 class UAttributeSet;
 
 UCLASS(Abstract)
-class A3_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface
+class A3_API AAuraCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -42,10 +43,16 @@ protected:
 	//初始化角色信息
 	virtual void InitAbilityActorInfo();
 
-	//主属性游戏效果
+	//主要属性游戏效果
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 
-	//初始化主属性
-	void InitializePrimaryAttributes() const;
+	//次要属性游戏效果
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryAttributes;
+
+	//应用效果到自身
+	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
+	//初始化默认属性
+	void InitializeDefaultAttributes() const;
 };
