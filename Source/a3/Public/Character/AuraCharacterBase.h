@@ -43,6 +43,10 @@ protected:
 	//初始化角色信息
 	virtual void InitAbilityActorInfo();
 
+	//关键属性游戏效果
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
+	TSubclassOf<UGameplayEffect> DefaultVitalAttributes;
+
 	//主要属性游戏效果
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;

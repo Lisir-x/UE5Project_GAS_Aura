@@ -38,7 +38,9 @@ void AAuraCharacterBase::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> Gameplay
 	check(IsValid(GetAbilitySystemComponent()));
 	check(GameplayEffectClass);
 	//创建游戏效果上下文句柄
-	const FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	FGameplayEffectContextHandle ContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+	//将当前对象设置为效果的源对象
+	ContextHandle.AddSourceObject(this);
 	//创建游戏效果规格句柄(要应用的游戏效果类,效果等级,上下文句柄)
 	const FGameplayEffectSpecHandle SpecHandle =
 		GetAbilitySystemComponent()->MakeOutgoingSpec(GameplayEffectClass, Level, ContextHandle);
@@ -50,5 +52,6 @@ void AAuraCharacterBase::InitializeDefaultAttributes() const
 {
 	ApplyEffectToSelf(DefaultPrimaryAttributes, 1.f);
 	ApplyEffectToSelf(DefaultSecondaryAttributes, 1.f);
+	ApplyEffectToSelf(DefaultVitalAttributes, 1.f);
 }
 
