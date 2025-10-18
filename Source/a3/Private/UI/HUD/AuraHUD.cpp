@@ -4,6 +4,7 @@
 #include "UI/HUD/AuraHUD.h"
 
 #include "UI/Widget/AuraUserWidget.h"
+#include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 
 //获取覆层控件控制器
@@ -18,12 +19,26 @@ UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetCont
 		OverlayWidgetController->SetWidgetControllerParams(WCParams);
 		//控件控制器绑定回调到依赖项
 		OverlayWidgetController->BindCallbacksToDependencies();
-
-		//返回新创建的覆层控件控制器
-		return OverlayWidgetController;
 	}
-	//如果覆层控件控制器已经存在，直接返回它
+	//返回覆层控件控制器
 	return OverlayWidgetController;
+}
+
+//获取属性菜单控件控制器
+UAttributeMenuWidgetController* AAuraHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
+{
+	//如果属性菜单控件控制器尚未初始化
+	if (AttributeMenuWidgetController == nullptr)
+	{
+		//使用指定的类创建一个新的属性菜单控件控制器实例
+		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
+		//设置属性菜单控件控制器参数
+		AttributeMenuWidgetController->SetWidgetControllerParams(WCParams);
+		//控件控制器绑定回调到依赖项
+		AttributeMenuWidgetController->BindCallbacksToDependencies();
+	}
+	//返回属性菜单控件控制器
+	return AttributeMenuWidgetController;
 }
 
 //初始化覆层 

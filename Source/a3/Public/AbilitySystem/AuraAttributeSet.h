@@ -58,6 +58,14 @@ struct FEffectProperties
 	ACharacter* TargetCharacter = nullptr;
 };
 
+//typedef是只针对FGameplayAttribute()的签名，但是TStaticFunPtr适用于任意签名
+//typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFuncPtr;
+template<class T>
+using TStaticFuncPtr = TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
+
+/**
+ * 
+ */
 UCLASS()
 class A3_API UAuraAttributeSet : public UAttributeSet
 {
@@ -72,6 +80,9 @@ public:
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	//游戏效果执行后
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+
+	//游戏标签和属性的映射表(值为函数指针)
+	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
 
 	/*----------关键属性----------*/
 	//当前生命值
@@ -133,7 +144,7 @@ public:
 	FGameplayAttributeData CriticalHitDamage;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CriticalHitDamage);
 
-	//暴击抗性：降低受到伤害时的暴击率
+	//暴击抵抗：降低受到伤害时的暴击率
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_CriticalHitResistance, Category = "Secondary Attributes")
 	FGameplayAttributeData CriticalHitResistance;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CriticalHitResistance);

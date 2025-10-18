@@ -56,7 +56,7 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 		}
 	);
 
-	//绑定效果资产标签委托
+	//绑定消息控件行委托
 	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda(
 		[this](const FGameplayTagContainer& AssetTags)
 		{

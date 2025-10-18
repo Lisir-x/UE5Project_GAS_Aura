@@ -47,8 +47,11 @@ public:
 	//设置控件控制器参数蓝图函数
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams (const FWidgetControllerParams& WCParams);
+	
 	//广播初始值
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
+	
 	//绑定回调到依赖项
 	virtual void BindCallbacksToDependencies();
 	

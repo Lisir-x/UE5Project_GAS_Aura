@@ -49,7 +49,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 
 	GameplayTags.Attributes_Secondary_CriticalHitResistance = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.CriticalHitResistance"),
-		FString("暴击抗性：降低受到伤害时的暴击率"));
+		FString("暴击抵抗：降低受到伤害时的暴击率"));
 
 	GameplayTags.Attributes_Secondary_HealthRegeneration = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.HealthRegeneration"),
