@@ -11,8 +11,6 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 	//绑定效果应用回调函数
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectApplied);
 
-	//获取游戏标签实例
-	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
 }
 
 //效果应用回调函数
