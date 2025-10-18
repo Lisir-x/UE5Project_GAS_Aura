@@ -5,6 +5,7 @@
 
 #include "AuraGameplayTags.h"
 
+//静态获取资产管理函数
 UAuraAssetManager& UAuraAssetManager::Get()
 {
 	check(GEngine);	//检查初始化
@@ -13,6 +14,7 @@ UAuraAssetManager& UAuraAssetManager::Get()
 	return *AuraAssetManager;
 }
 
+//开始初始化加载
 void UAuraAssetManager::StartInitialLoading()
 {
 	Super::StartInitialLoading();

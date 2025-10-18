@@ -13,13 +13,6 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 
 	//获取游戏标签实例
 	const FAuraGameplayTags& GameplayTags = FAuraGameplayTags::Get();
-	//打印调试信息
-	GEngine->AddOnScreenDebugMessage(
-		-1,
-		10.f,
-		FColor::Orange,
-		FString::Printf(TEXT("Tag: %s"), *GameplayTags.Attributes_Secondary_Armor.ToString())
-		);
 }
 
 //效果应用回调函数
