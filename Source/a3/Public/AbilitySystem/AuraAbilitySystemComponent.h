@@ -20,6 +20,9 @@ public:
 
 	//效果资产标签多播委托
 	FEffectAssetTags EffectAssetTags;
+
+	//添加角色技能
+	void AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities);
 	
 protected:
 	//效果应用回调函数

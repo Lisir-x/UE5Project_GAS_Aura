@@ -30,6 +30,8 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 {
 	Super::PossessedBy(NewController);
 	InitAbilityActorInfo();
+	//添加角色技能
+	AddCharacterAbilities();
 }
 
 //在客户端上初始化角色信息
