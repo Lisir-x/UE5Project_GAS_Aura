@@ -2,8 +2,11 @@
 
 
 #include "Player/AuraPlayerController.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
-#include "EnhancedInputComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 
 AAuraPlayerController::AAuraPlayerController()
@@ -52,9 +55,12 @@ void AAuraPlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	//转换为增强输入组件
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
+	UAuraInputComponent* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
 	//绑定移动
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+	//绑定技能输入操作
+	AuraInputComponent->BindAbilityActions(InputConfig, this,
+		&ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 //移动函数
@@ -124,4 +130,40 @@ void AAuraPlayerController::CursorTrace()
 		//情况E
 		else {/*不做任何操作*/}
 	}
+}
+
+//按下事件回调函数
+void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	//GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+}
+
+//松开事件回调函数
+void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	//若获取的能力系统组件为空则直接返回
+	if (GetASC() == nullptr) return;
+	//获取到能力系统组件并执行松开按键处理函数
+	GetASC()->AbilityInputTagReleased(InputTag);
+}
+
+//长按事件回调函数
+void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	//若获取的能力系统组件为空则直接返回
+	if (GetASC() == nullptr) return;
+	//获取到能力系统组件并执行长按按键处理函数
+	GetASC()->AbilityInputTagHeld(InputTag);
+}
+
+//获取能力系统组件
+UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
+{
+	if (AuraAbilitySystemComponent == nullptr)
+	{
+		//获取Pawn转换为Aura能力系统组件
+		AuraAbilitySystemComponent = Cast<UAuraAbilitySystemComponent>(
+			UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return AuraAbilitySystemComponent;
 }
