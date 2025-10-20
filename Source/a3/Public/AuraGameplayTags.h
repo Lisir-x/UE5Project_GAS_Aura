@@ -38,7 +38,6 @@ public:
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
 
-protected:
 	//输入操作
 	FGameplayTag InputTag_LMB;
 	FGameplayTag InputTag_RMB;

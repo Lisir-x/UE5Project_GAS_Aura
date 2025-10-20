@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class USplineComponent;
 class UAuraAbilitySystemComponent;
 class UAuraInputConfig;
 class UInputMappingContext;
@@ -46,6 +47,8 @@ private:
 	//存储上一次和当前被命中的敌人接口对象
 	IEnemyInterface* LastActor;
 	IEnemyInterface* ThisActor;
+	//光标命中结果
+	FHitResult CursorHit;
 
 	//输入配置
 	UPROPERTY(EditDefaultsOnly, Category="Input")
@@ -62,4 +65,26 @@ private:
 
 	//获取能力系统组件
 	UAuraAbilitySystemComponent* GetASC();
+
+	//目标位置缓存
+	FVector CachedDestination = FVector::ZeroVector;
+	//点击时间
+	float FollowTime = 0.f;
+	//短按时间阈值
+	float ShortPressThreshold = 0.5f;
+	//自动移动中
+	bool bAutoRunning = false;
+	//锁定中
+	bool bTargeting = false;
+
+	//自动移动接受半径
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptanceRadius = 50.f;
+
+	//样条线组件
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> Spline;
+
+	//自动移动
+	void AutoRun();
 };
