@@ -24,4 +24,6 @@ class A3_API ICombatInterface
 public:
 	//获取等级
 	virtual int32 GetPlayerLevel();
+	//获取战斗插槽的位置
+	virtual FVector GetCombatSocketLocation();
 };

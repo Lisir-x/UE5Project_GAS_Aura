@@ -8,3 +8,9 @@ int32 ICombatInterface::GetPlayerLevel()
 {
 	return 0;
 }
+
+//获取战斗插槽的位置
+FVector ICombatInterface::GetCombatSocketLocation()
+{
+	return FVector();
+}

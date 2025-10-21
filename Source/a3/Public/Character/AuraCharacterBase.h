@@ -33,6 +33,13 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
+	//武器尖端插槽名称
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	FName WeaponTipSocketName;
+
+	//获取战斗插槽的位置
+	virtual FVector GetCombatSocketLocation() override;
+
 	//能力系统组件
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
