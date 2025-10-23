@@ -131,6 +131,8 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
 		SetHealth(FMath::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+		UE_LOG(LogTemp, Warning, TEXT("Changed Health on %s, Health: %f"),
+			*Props.TargetAvatarActor->GetName(), GetHealth());
 	}
 	//限制法力值在0和最大法力值之间
 	if (Data.EvaluatedData.Attribute == GetManaAttribute())

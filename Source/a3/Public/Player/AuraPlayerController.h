@@ -39,6 +39,16 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	//Shift键输入
+	UPROPERTY(EditAnywhere, Category="Input")
+	TObjectPtr<UInputAction> ShiftAction;
+
+	//Shift键处理函数(内联函数)
+	void ShiftPressed() { bShiftKeyDown = true; }
+	void ShiftReleased() { bShiftKeyDown = false; }
+	//Shift键是否按下的标志
+	bool bShiftKeyDown = false;
+
 	//移动函数
 	void Move(const FInputActionValue& Value);
 

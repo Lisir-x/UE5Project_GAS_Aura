@@ -3,6 +3,7 @@
 
 #include "AuraAssetManager.h"
 
+#include "AbilitySystemGlobals.h"
 #include "AuraGameplayTags.h"
 
 //静态获取资产管理函数
@@ -21,4 +22,7 @@ void UAuraAssetManager::StartInitialLoading()
 
 	//初始化原生游戏标签
 	FAuraGameplayTags::InitializeNativeGameplayTags();
+	
+	//初始化全局数据
+	UAbilitySystemGlobals::Get().InitGlobalData();
 }

@@ -67,6 +67,9 @@ void AAuraPlayerController::SetupInputComponent()
 	UAuraInputComponent* AuraInputComponent = CastChecked<UAuraInputComponent>(InputComponent);
 	//绑定移动
 	AuraInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::Move);
+	//绑定Shif键按下和松开操作
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Started, this, &AAuraPlayerController::ShiftPressed);
+	AuraInputComponent->BindAction(ShiftAction, ETriggerEvent::Completed, this, &AAuraPlayerController::ShiftReleased);
 	//绑定技能输入操作
 	AuraInputComponent->BindAbilityActions(InputConfig, this,
 		&ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
@@ -133,20 +136,17 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	//非左键输入
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		//若获取到能力系统组件则执行长按按键处理函数
+		//若获取到能力系统组件则执行松开按键处理函数
 		if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
 		//否则直接返回
 		return;
 	}
 	
-	//处于锁定中
-	if (bTargeting)
-	{
-		//若获取到能力系统组件则执行长按按键处理函数
-		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
-	}
-	//未处于锁定中，执行点击移动处理
-	else
+	//若获取到能力系统组件则执行松开按键处理函数
+	if (GetASC()) GetASC()->AbilityInputTagReleased(InputTag);
+	
+	//未处于锁定中或未按下Shift键，执行点击移动处理
+	if (!bTargeting && !bShiftKeyDown)
 	{
 		//创建并获取Pawn
 		const APawn* ControlledPawn = GetPawn();
@@ -189,8 +189,8 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 		return;
 	}
 
-	//处于锁定中
-	if (bTargeting)
+	//处于锁定中或按住Shift键
+	if (bTargeting || bShiftKeyDown)
 	{
 		//若获取到能力系统组件则执行长按按键处理函数
 		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
@@ -227,6 +227,7 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
 	return AuraAbilitySystemComponent;
 }
 
+//自动移动
 void AAuraPlayerController::AutoRun()
 {
 	//若不处于自动移动中则直接返回
