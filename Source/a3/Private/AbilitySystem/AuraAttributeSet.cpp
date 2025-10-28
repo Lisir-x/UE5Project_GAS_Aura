@@ -139,6 +139,23 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	{
 		SetMana(FMath::Clamp(GetMana(), 0.f, GetMaxMana()));
 	}
+	//
+	if (Data.EvaluatedData.Attribute == GetIncomingDamageAttribute())
+	{
+		//缓存即将受到的伤害，并将元属性清零
+		const float LocalIncomingDamage = GetIncomingDamage();
+		SetIncomingDamage(0.f);
+		//若伤害有效(大于0)
+		if (LocalIncomingDamage > 0.f)
+		{
+			//实现伤害
+			const float NewHealth = GetHealth() - LocalIncomingDamage;
+			SetHealth(FMath::Clamp(NewHealth, 0.f, GetMaxHealth()));
+
+			//死亡逻辑
+			const bool bFatal = NewHealth <= 0.f;
+		}
+	}
 }
 
 /*----------副本通知函数----------*/

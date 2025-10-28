@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Character/AuraCharacterBase.h"
 #include "Interaction/EnemyInterface.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
@@ -43,13 +44,18 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-
 	//初始化角色信息
 	virtual void InitAbilityActorInfo() override;
+	//初始化默认属性
+	virtual void InitializeDefaultAttributes() const override;
 	
 	//角色等级
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
 	int32 Level = 1;
+
+	//角色职业类(默认为战士)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character Class Defaults")
+	ECharacterClass CharacterClass = ECharacterClass::Warrior;
 
 	//控件组件(血条)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)

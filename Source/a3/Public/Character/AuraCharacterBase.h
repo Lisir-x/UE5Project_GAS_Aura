@@ -66,7 +66,7 @@ protected:
 	//应用效果到自身
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass, float Level) const;
 	//初始化默认属性
-	void InitializeDefaultAttributes() const;
+	virtual void InitializeDefaultAttributes() const;
 
 	//添加角色技能
 	void AddCharacterAbilities();

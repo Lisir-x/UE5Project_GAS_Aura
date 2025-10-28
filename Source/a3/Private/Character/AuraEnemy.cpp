@@ -6,6 +6,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "a3/a3.h"
+#include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Components/WidgetComponent.h"
 #include "UI/Widget/AuraUserWidget.h"
 
@@ -96,4 +97,12 @@ void AAuraEnemy::InitAbilityActorInfo()
 
 	//初始化默认属性
 	InitializeDefaultAttributes();
+}
+
+//初始化默认属性
+void AAuraEnemy::InitializeDefaultAttributes() const
+{
+	//调用蓝图函数库的初始化默认属性函数
+	UAuraAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass,
+		Level, AbilitySystemComponent);
 }
