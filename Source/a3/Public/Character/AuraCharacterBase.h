@@ -8,6 +8,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UAnimMontage;
 class UGameplayAbility;
 class UGameplayEffect;
 class UAbilitySystemComponent;
@@ -25,6 +26,9 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	//获取属性集组件
 	UAttributeSet* GetAttributeSet() const {return AttributeSet;}
+
+	//获取受击反应蒙太奇
+	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -75,4 +79,8 @@ private:
 	//游戏技能类数组
 	UPROPERTY(EditAnywhere, Category = "Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+
+	//受击反应蒙太奇
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	TObjectPtr<UAnimMontage> HitReactMontage;
 };

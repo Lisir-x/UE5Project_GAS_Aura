@@ -3,6 +3,7 @@
 
 #include "AuraGameplayTags.h"
 #include "GameplayTagsManager.h"
+#include "GameplayTagsSettings.h"
 
 FAuraGameplayTags FAuraGameplayTags::GameplayTags;
 
@@ -91,4 +92,14 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 	GameplayTags.InputTag_4 = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.4"),
 		FString("Input Tag for 4 key"));
+
+	/*----------伤害----------*/
+	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage"),
+		FString("Damage"));
+
+	/*----------受击反应----------*/
+	GameplayTags.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Effects.HitReact"),
+		FString("Tag granted when Hit Reacting"));
 }

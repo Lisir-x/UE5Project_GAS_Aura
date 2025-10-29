@@ -45,6 +45,12 @@ public:
 	FGameplayTag InputTag_2;
 	FGameplayTag InputTag_3;
 	FGameplayTag InputTag_4;
+
+	//伤害
+	FGameplayTag Damage;
+
+	//受击反应
+	FGameplayTag Effects_HitReact;
 	/*---------------------------------*/
 	
 private:

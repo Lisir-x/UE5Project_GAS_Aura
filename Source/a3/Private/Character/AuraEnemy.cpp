@@ -3,11 +3,13 @@
 
 #include "Character/AuraEnemy.h"
 
+#include "AuraGameplayTags.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "a3/a3.h"
 #include "AbilitySystem/AuraAbilitySystemLibrary.h"
 #include "Components/WidgetComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widget/AuraUserWidget.h"
 
 AAuraEnemy::AAuraEnemy()
@@ -46,14 +48,26 @@ void AAuraEnemy::UnHighlightActor()
 	Weapon->SetRenderCustomDepth(false);
 }
 
+//获取角色等级
 int32 AAuraEnemy::GetPlayerLevel()
 {
 	return Level;
 }
 
+//受击反应标签变化回调函数
+void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
+{
+	//计数大于0则处于受击反应状态
+	bHitReacting = NewCount > 0;
+	//根据是否处于受击反应状态来设置最大移动速度
+	GetCharacterMovement()->MaxWalkSpeed = bHitReacting ? 0.f : BaseWalkSpeed;
+}
+
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	//设置角色移动组件的最大移动速度
+	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	//初始化角色信息
 	InitAbilityActorInfo();
 
@@ -79,6 +93,13 @@ void AAuraEnemy::BeginPlay()
 			{
 				OnMaxHealthChanged.Broadcast(Data.NewValue);
 			}
+		);
+
+		//注册游戏标签事件监听器并添加受击反应标签变化回调函数
+		AbilitySystemComponent->RegisterGameplayTagEvent(FAuraGameplayTags::Get().Effects_HitReact,
+			EGameplayTagEventType::NewOrRemoved).AddUObject(
+			this,
+			&AAuraEnemy::HitReactTagChanged
 		);
 
 		//广播当前生命值和最大生命值

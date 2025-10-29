@@ -41,6 +41,17 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnAttributeChangedSignature OnMaxHealthChanged;
 	/*------------------------------*/
+
+	//受击反应标签变化回调函数
+	void HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount);
+
+	//是否处于受击反应状态
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	bool bHitReacting = false;
+
+	//基础移动速度
+	UPROPERTY(BlueprintReadOnly, Category = "Combat")
+	float BaseWalkSpeed = 250.f;
 	
 protected:
 	virtual void BeginPlay() override;
