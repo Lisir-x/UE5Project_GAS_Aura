@@ -7,6 +7,7 @@
 #include "AuraGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "GameplayEffectExtension.h"
+#include "Interaction/CombatInterface.h"
 #include "Net/UnrealNetwork.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -123,7 +124,7 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 {
 	Super::PostGameplayEffectExecute(Data);
 
-	//创建EffectProperties结构体并调用SetEffectProperties设置效果属性
+	//创建效果属性结构体并设置效果属性
 	FEffectProperties Props;
 	SetEffectProperties(Data, Props);
 
@@ -154,6 +155,26 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 			//死亡逻辑
 			const bool bFatal = NewHealth <= 0.f;
+			//若死亡(死亡逻辑)
+			if (bFatal)
+			{
+				//效果属性中获取目标角色并转换为战斗接口
+				ICombatInterface* CombatInterface = Cast<ICombatInterface>(Props.TargetAvatarActor);
+				//若转换成功则调用死亡逻辑
+				if (CombatInterface)
+				{
+					CombatInterface->Die();
+				}
+			}
+			//若未死亡(受击逻辑)
+			else
+			{
+				//创建标签容器并向标签容器添加受击反应标签
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(FAuraGameplayTags::Get().Effects_HitReact);
+				//激活角色所有匹配标签容器中受击反应标签的能力
+				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
+			}
 		}
 	}
 }

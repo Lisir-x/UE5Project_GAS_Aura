@@ -54,6 +54,14 @@ int32 AAuraEnemy::GetPlayerLevel()
 	return Level;
 }
 
+//死亡逻辑
+void AAuraEnemy::Die()
+{
+	//设置生命周期
+	SetLifeSpan(LifeSpan);
+	Super::Die();
+}
+
 //受击反应标签变化回调函数
 void AAuraEnemy::HitReactTagChanged(const FGameplayTag CallbackTag, int32 NewCount)
 {
@@ -70,6 +78,8 @@ void AAuraEnemy::BeginPlay()
 	GetCharacterMovement()->MaxWalkSpeed = BaseWalkSpeed;
 	//初始化角色信息
 	InitAbilityActorInfo();
+	//赋予初始能力
+	UAuraAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
 
 	//尝试将自身控件组件转换为Aura用户控件并作为控件控制器
 	if (UAuraUserWidget* AuraUserWidget = Cast<UAuraUserWidget>(HealthBar->GetUserWidgetObject()))

@@ -27,9 +27,11 @@ public:
 	virtual void UnHighlightActor() override;
 	/*--------------------------*/
 
-	/*----------敌人接口----------*/
+	/*----------战斗接口----------*/
 	//获取角色等级
 	virtual int32 GetPlayerLevel() override;
+	//死亡逻辑
+	virtual void Die() override;
 	/*--------------------------*/
 	
 	/*----------动态多播委托----------*/
@@ -52,6 +54,10 @@ public:
 	//基础移动速度
 	UPROPERTY(BlueprintReadOnly, Category = "Combat")
 	float BaseWalkSpeed = 250.f;
+
+	//生命周期
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Combat")
+	float LifeSpan = 5.f;
 	
 protected:
 	virtual void BeginPlay() override;

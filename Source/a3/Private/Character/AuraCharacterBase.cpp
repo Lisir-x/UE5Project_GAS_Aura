@@ -37,6 +37,36 @@ UAnimMontage* AAuraCharacterBase::GetHitReactMontage_Implementation()
 	return HitReactMontage;
 }
 
+//死亡逻辑
+void AAuraCharacterBase::Die()
+{
+	//武器分离
+	Weapon->DetachFromComponent(FDetachmentTransformRules(EDetachmentRule::KeepWorld, true));
+	//死亡多播句柄(调用客户端死亡逻辑)
+	MulticastHandleDeath();
+}
+
+//死亡多播句柄
+void AAuraCharacterBase::MulticastHandleDeath_Implementation()
+{
+	//设置武器网格体属性
+	Weapon->SetSimulatePhysics(true); //启用物理模拟
+	Weapon->SetEnableGravity(true);	//启用重力
+	Weapon->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly); //仅物理
+
+	//设置自身网格体属性
+	GetMesh()->SetSimulatePhysics(true);
+	GetMesh()->SetEnableGravity(true);
+	GetMesh()->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	GetMesh()->SetCollisionResponseToChannel(ECC_WorldStatic, ECR_Block); //阻挡静态世界对象
+
+	//设置胶囊组件属性
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision); //无碰撞
+	
+	//溶解
+	Dissolve();
+}
+
 void AAuraCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
@@ -88,5 +118,30 @@ void AAuraCharacterBase::AddCharacterAbilities()
 
 	//添加角色技能
 	AuraASC->AddCharacterAbilities(StartupAbilities);
+}
+
+//溶解逻辑
+void AAuraCharacterBase::Dissolve()
+{
+	//若溶解材质实例有效
+	if (IsValid(DissolveMaterialInstance))
+	{
+		//创建动态材质实例(溶解材质实例)
+		UMaterialInstanceDynamic* DynamicMatInst = UMaterialInstanceDynamic::Create(DissolveMaterialInstance, this);
+		//将自身材质替换为动态材质实例
+		GetMesh()->SetMaterial(0, DynamicMatInst);
+		//启用溶解时间轴
+		StartDissolveTimeline(DynamicMatInst);
+	}
+	//若武器溶解材质实例有效
+	if (IsValid(WeaponDissolveMaterialInstance))
+	{
+		//创建动态材质实例(武器溶解材质实例)
+		UMaterialInstanceDynamic* DynamicMatInst = UMaterialInstanceDynamic::Create(WeaponDissolveMaterialInstance, this);
+		//将自身材质替换为动态材质实例
+		Weapon->SetMaterial(0, DynamicMatInst);
+		//启用武器溶解时间轴
+		StartWeaponDissolveTimeline(DynamicMatInst);
+	}
 }
 

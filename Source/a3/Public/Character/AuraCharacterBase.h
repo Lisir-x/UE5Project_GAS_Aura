@@ -27,8 +27,16 @@ public:
 	//获取属性集组件
 	UAttributeSet* GetAttributeSet() const {return AttributeSet;}
 
+	/*----------战斗接口----------*/
 	//获取受击反应蒙太奇
 	virtual UAnimMontage* GetHitReactMontage_Implementation() override;
+	//死亡逻辑
+	virtual void Die() override;
+	/*--------------------------*/
+	
+	//死亡多播句柄
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void MulticastHandleDeath();
 
 protected:
 	virtual void BeginPlay() override;
@@ -74,6 +82,27 @@ protected:
 
 	//添加角色技能
 	void AddCharacterAbilities();
+	
+	/*----------溶解效果----------*/
+	//溶解逻辑
+	void Dissolve();
+
+	//启用溶解时间轴
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
+
+	//启用武器溶解时间轴
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartWeaponDissolveTimeline(UMaterialInstanceDynamic* DynamicMaterialInstance);
+
+	//溶解材质实例
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UMaterialInstance> DissolveMaterialInstance;
+
+	//武器溶解材质实例
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	TObjectPtr<UMaterialInstance> WeaponDissolveMaterialInstance;
+	/*--------------------------*/
 
 private:
 	//游戏技能类数组
