@@ -10,8 +10,10 @@
 #include "NavigationSystem.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Components/SplineComponent.h"
+#include "GameFramework/Character.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
+#include "UI/Widget/DamageTextComponent.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -29,6 +31,25 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 	CursorTrace();
 	//自动移动
 	AutoRun();
+}
+
+//显示伤害数字
+void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter)
+{
+	//若目标角色有效且存在伤害数字组件类
+	if (IsValid(TargetCharacter) && DamageTextComponentClass)
+	{
+		//创建新的伤害数字组件
+		UDamageTextComponent* DamageText = NewObject<UDamageTextComponent>(TargetCharacter, DamageTextComponentClass);
+		//注册组件
+		DamageText->RegisterComponent();
+		//附加到目标角色根组件上
+		DamageText->AttachToComponent(TargetCharacter->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
+		//分离组件
+		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+		//设置伤害数字
+		DamageText->SetDamageText(DamageAmount);
+	}
 }
 
 void AAuraPlayerController::BeginPlay()

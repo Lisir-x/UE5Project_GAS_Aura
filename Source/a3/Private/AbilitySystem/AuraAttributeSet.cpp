@@ -8,7 +8,9 @@
 #include "GameFramework/Character.h"
 #include "GameplayEffectExtension.h"
 #include "Interaction/CombatInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Player/AuraPlayerController.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -175,6 +177,25 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 				//激活角色所有匹配标签容器中受击反应标签的能力
 				Props.TargetASC->TryActivateAbilitiesByTag(TagContainer);
 			}
+
+			//显示浮动文本
+			ShowFloatingText(Props, LocalIncomingDamage);
+		}
+	}
+}
+
+//显示浮动文本
+void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage) const
+{
+	//检查源角色与目标角色是否不同(避免自伤)
+	if (Props.SourceCharacter != Props.TargetCharacter)
+	{
+		//尝试获取玩家控制器
+		if(AAuraPlayerController* PC = Cast<AAuraPlayerController>(
+			UGameplayStatics::GetPlayerController(Props.SourceCharacter, 0)))
+		{
+			//显示伤害数字
+			PC->ShowDamageNumber(Damage, Props.TargetCharacter);
 		}
 	}
 }
