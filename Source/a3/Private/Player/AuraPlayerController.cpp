@@ -34,7 +34,8 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 }
 
 //显示伤害数字
-void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter)
+void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmount, ACharacter* TargetCharacter,
+	bool bBlockedHit, bool bCriticalHit)
 {
 	//若目标角色有效且存在伤害数字组件类
 	if (IsValid(TargetCharacter) && DamageTextComponentClass)
@@ -48,7 +49,7 @@ void AAuraPlayerController::ShowDamageNumber_Implementation(float DamageAmount, 
 		//分离组件
 		DamageText->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 		//设置伤害数字
-		DamageText->SetDamageText(DamageAmount);
+		DamageText->SetDamageText(DamageAmount, bBlockedHit, bCriticalHit);
 	}
 }
 
