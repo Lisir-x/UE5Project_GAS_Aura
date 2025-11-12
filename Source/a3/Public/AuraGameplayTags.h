@@ -37,6 +37,17 @@ public:
 	FGameplayTag Attributes_Secondary_ManaRegeneration;
 	FGameplayTag Attributes_Secondary_MaxHealth;
 	FGameplayTag Attributes_Secondary_MaxMana;
+	//抗性属性
+	FGameplayTag Attributes_Resistance_Fire;
+	FGameplayTag Attributes_Resistance_Water;
+	FGameplayTag Attributes_Resistance_Wind;
+	FGameplayTag Attributes_Resistance_Ice;
+	FGameplayTag Attributes_Resistance_Lightning;
+	FGameplayTag Attributes_Resistance_Geo;
+	FGameplayTag Attributes_Resistance_Grass;
+	FGameplayTag Attributes_Resistance_Light;
+	FGameplayTag Attributes_Resistance_Dark;
+	FGameplayTag Attributes_Resistance_Physical;
 
 	//输入操作
 	FGameplayTag InputTag_LMB;
@@ -48,6 +59,18 @@ public:
 
 	//伤害
 	FGameplayTag Damage;
+	FGameplayTag Damage_Fire;
+	FGameplayTag Damage_Water;
+	FGameplayTag Damage_Wind;
+	FGameplayTag Damage_Ice;
+	FGameplayTag Damage_Lightning;
+	FGameplayTag Damage_Geo;
+	FGameplayTag Damage_Grass;
+	FGameplayTag Damage_Light;
+	FGameplayTag Damage_Dark;
+	FGameplayTag Damage_Physical;
+	//伤害类型与抗性映射集
+	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances;
 
 	//受击反应
 	FGameplayTag Effects_HitReact;

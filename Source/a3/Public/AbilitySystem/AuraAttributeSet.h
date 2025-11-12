@@ -170,6 +170,58 @@ public:
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana);
 	/*--------------------------*/
 
+	/*----------抗性属性----------*/
+	//火属性抗性：减少受到的火属性伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_FireResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData FireResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, FireResistance);
+
+	//水属性抗性：减少受到的水属性伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_WaterResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData WaterResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, WaterResistance);
+
+	//风属性抗性：减少受到的风属性伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_WindResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData WindResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, WindResistance);
+
+	//冰属性抗性：减少受到的冰属性伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_IceResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData IceResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, IceResistance);
+
+	//雷属性抗性：减少受到的雷属性伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_LightningResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData LightningResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, LightningResistance);
+
+	//岩属性抗性：减少受到的岩属性伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_GeoResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData GeoResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, GeoResistance);
+
+	//草属性抗性：减少受到的草属性伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_GrassResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData GrassResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, GrassResistance);
+
+	//光属性抗性：减少受到的光属性伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_LightResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData LightResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, LightResistance);
+
+	//暗属性抗性：减少受到的暗属性伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_DarkResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData DarkResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, DarkResistance);
+
+	//物理抗性：减少受到的物理伤害
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_PhysicalResistance, Category = "Resistance Attributes")
+	FGameplayAttributeData PhysicalResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, PhysicalResistance);
+	/*--------------------------*/
+	
 	/*----------元属性----------*/
 	//即将受到的伤害
 	UPROPERTY(BlueprintReadOnly, Category = "Meta Attributes")
@@ -225,6 +277,36 @@ public:
 
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
+	
+	UFUNCTION()
+	void OnRep_FireResistance(const FGameplayAttributeData& OldFireResistance) const;
+	
+	UFUNCTION()
+	void OnRep_WaterResistance(const FGameplayAttributeData& OldWaterResistance) const;
+	
+	UFUNCTION()
+	void OnRep_WindResistance(const FGameplayAttributeData& OldWindResistance) const;
+	
+	UFUNCTION()
+	void OnRep_IceResistance(const FGameplayAttributeData& OldIceResistance) const;
+	
+	UFUNCTION()
+	void OnRep_LightningResistance(const FGameplayAttributeData& OldLightningResistance) const;
+	
+	UFUNCTION()
+	void OnRep_GeoResistance(const FGameplayAttributeData& OldGeoResistance) const;
+	
+	UFUNCTION()
+	void OnRep_GrassResistance(const FGameplayAttributeData& OldGrassResistance) const;
+	
+	UFUNCTION()
+	void OnRep_LightResistance(const FGameplayAttributeData& OldLightResistance) const;
+	
+	UFUNCTION()
+	void OnRep_DarkResistance(const FGameplayAttributeData& OldDarkResistance) const;
+	
+	UFUNCTION()
+	void OnRep_PhysicalResistance(const FGameplayAttributeData& OldPhysicalResistance) const;
 	/*------------------------------*/
 	
 private:

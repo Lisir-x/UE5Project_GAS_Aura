@@ -3,7 +3,6 @@
 
 #include "AuraGameplayTags.h"
 #include "GameplayTagsManager.h"
-#include "GameplayTagsSettings.h"
 
 FAuraGameplayTags FAuraGameplayTags::GameplayTags;
 
@@ -68,6 +67,47 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("Attributes.Secondary.MaxMana"),
 		FString("最大法力值：角色的法力值上限"));
 
+	/*----------抗性属性----------*/
+	GameplayTags.Attributes_Resistance_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Resistance.Fire"),
+		FString("火属性抗性：减少受到的火属性伤害"));
+	
+	GameplayTags.Attributes_Resistance_Water = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Resistance.Water"),
+		FString("水属性抗性：减少受到的水属性伤害"));
+	
+	GameplayTags.Attributes_Resistance_Wind = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Resistance.Wind"),
+		FString("风属性抗性：减少受到的风属性伤害"));
+	
+	GameplayTags.Attributes_Resistance_Ice = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Resistance.Ice"),
+		FString("冰属性抗性：减少受到的冰属性伤害"));
+	
+	GameplayTags.Attributes_Resistance_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Resistance.Lightning"),
+		FString("雷属性抗性：减少受到的雷属性伤害"));
+	
+	GameplayTags.Attributes_Resistance_Geo = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Resistance.Geo"),
+		FString("岩属性抗性：减少受到的岩属性伤害"));
+	
+	GameplayTags.Attributes_Resistance_Grass = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Resistance.Grass"),
+		FString("草属性抗性：减少受到的草属性伤害"));
+	
+	GameplayTags.Attributes_Resistance_Light = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Resistance.Light"),
+		FString("光属性抗性：减少受到的光属性伤害"));
+	
+	GameplayTags.Attributes_Resistance_Dark = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Resistance.Dark"),
+		FString("暗属性抗性：减少受到的暗属性伤害"));
+	
+	GameplayTags.Attributes_Resistance_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Resistance.Physical"),
+		FString("物理抗性：减少受到的物理伤害"));
+	
 	/*----------输入操作----------*/
 	GameplayTags.InputTag_LMB = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("InputTag.LMB"),
@@ -93,10 +133,91 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FName("InputTag.4"),
 		FString("Input Tag for 4 key"));
 
-	/*----------伤害----------*/
+	/*----------伤害及伤害类型----------*/
 	GameplayTags.Damage = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Damage"),
 		FString("Damage"));
+
+	GameplayTags.Damage_Fire = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Fire"),
+		FString("火属性伤害"));
+
+	GameplayTags.Damage_Water = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Water"),
+		FString("水属性伤害"));
+
+	GameplayTags.Damage_Wind = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Wind"),
+		FString("风属性伤害"));
+
+	GameplayTags.Damage_Ice = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Ice"),
+		FString("冰属性伤害"));
+
+	GameplayTags.Damage_Lightning = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Lightning"),
+		FString("雷属性伤害"));
+
+	GameplayTags.Damage_Geo = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Geo"),
+		FString("岩属性伤害"));
+	
+	GameplayTags.Damage_Grass = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Grass"),
+		FString("草属性伤害"));
+	
+	GameplayTags.Damage_Light = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Light"),
+		FString("光属性伤害"));
+	
+	GameplayTags.Damage_Dark = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Dark"),
+		FString("暗属性伤害"));
+	
+	GameplayTags.Damage_Physical = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Damage.Physical"),
+		FString("物理伤害"));
+
+	/*----------伤害类型与抗性映射----------*/
+	GameplayTags.DamageTypesToResistances.Add(
+		GameplayTags.Damage_Fire,
+		GameplayTags.Attributes_Resistance_Fire);
+	
+	GameplayTags.DamageTypesToResistances.Add(
+		GameplayTags.Damage_Water,
+		GameplayTags.Attributes_Resistance_Water);
+	
+	GameplayTags.DamageTypesToResistances.Add(
+		GameplayTags.Damage_Wind,
+		GameplayTags.Attributes_Resistance_Wind);
+	
+	GameplayTags.DamageTypesToResistances.Add(
+		GameplayTags.Damage_Ice,
+		GameplayTags.Attributes_Resistance_Ice);
+	
+	GameplayTags.DamageTypesToResistances.Add(
+		GameplayTags.Damage_Lightning,
+		GameplayTags.Attributes_Resistance_Lightning);
+	
+	GameplayTags.DamageTypesToResistances.Add(
+		GameplayTags.Damage_Geo,
+		GameplayTags.Attributes_Resistance_Geo);
+	
+	GameplayTags.DamageTypesToResistances.Add(
+		GameplayTags.Damage_Grass,
+		GameplayTags.Attributes_Resistance_Grass);
+	
+	GameplayTags.DamageTypesToResistances.Add(
+		GameplayTags.Damage_Light,
+		GameplayTags.Attributes_Resistance_Light);
+	
+	GameplayTags.DamageTypesToResistances.Add(
+		GameplayTags.Damage_Dark,
+		GameplayTags.Attributes_Resistance_Dark);
+	
+	GameplayTags.DamageTypesToResistances.Add(
+		GameplayTags.Damage_Physical,
+		GameplayTags.Attributes_Resistance_Physical);
 
 	/*----------受击反应----------*/
 	GameplayTags.Effects_HitReact = UGameplayTagsManager::Get().AddNativeGameplayTag(
